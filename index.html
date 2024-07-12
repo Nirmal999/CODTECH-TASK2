@@ -1,0 +1,319 @@
+index.html 
+<!DOCTYPE html> 
+<html lang="en" ng-app="BikesApp"> 
+ 
+<head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <title>Bikes</title> 
+  <link href="css/bootstrap.min.css" rel="stylesheet" /> 
+  <link rel="stylesheet" href="css/fa-all.min.css" /> 
+  <link rel="stylesheet" href="css/quill.snow.css" /> 
+   
+  <link rel="stylesheet" href="styles.css" /> 
+  <link rel="stylesheet" href="css/add-new.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/6.5.2/css/all.min.css" integrity="sha512-
+SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl
+9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+</head> 
+ 
+<body> 
+  <nav class="navbar navbar-expand-md fixed-top bg-black" data-bs-theme="dark"> 
+    <div class="container "> 
+      <a class="navbar-brand" href="/admin/"> 
+        <img src="vintage-bike-logo-cartoon-with-ai-generative-free-png.webp" alt="SmartBuy.com" height="60" /> 
+      </a> 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"         aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> 
+        <span class="navbar-toggler-icon"></span> 
+      </button> 
+      <div class="collapse navbar-collapse justify-content-between" id="navbar"> 
+        <ul class="navbar-nav"> 
+          <li class="nav-item"> 
+            <a class="nav-link" ng-class="{active: page==='/'}" href="/">About</a> 
+          </li> 
+          <li class="nav-item"> 
+            <a class="nav-link" ng-class="{active: page==='/categories'}" href="#!/categories">Categories</a> 
+          </li> 
+          <!-- Updated navigation for bikes --> 
+          <li class="nav-item"> 
+            <a class="nav-link" ng-class="{active: page==='/bikes'}" href="#!/bikes">Bikes</a> 
+          </li> 
+          <!-- End of updated navigation for bikes --> 
+        </ul> 
+        <button class="btn btn-primary">Logout</button> 
+      </div> 
+    </div> 
+  </nav> 
+   
+  <!-- Main content section for displaying bike-related content --> 
+  <main class="main"> 
+    <ng-view></ng-view> 
+  </main> 
+ 
+  <script src="js/bootstrap.bundle.min.js"></script> 
+  <script src="js/angular.min.js"></script> 
+  <script src="js/angular-route.js"></script> 
+  <script src="js/angular-sanitize.min.js"></script> 
+  <script src="js/quill.js"></script> 
+  <script src="js/ng-quill.js"></script> 
+  <script src="js/filters.js"></script> 
+  <script src="js/ctrl.js"></script> 
+  <script src="js/app.js"></script> 
+</body> 
+</html> 
+ 
+about.html 
+<div class="container pt-5 mb-5"> 
+  <div class="row row-cols-1 row-cols-md-2 g-4"> 
+    <div class="col"> 
+      <div class="card border-primary shadow"> 
+        <div class="card-body text-center"> 
+          <h3 class="card-title">Coloured Logo</h3> 
+          <div class="d-flex justify-content-center mb-3"> 
+            <button class="btn btn-primary btn-sm me-2">Change</button> 
+            <button class="btn btn-secondary btn-sm">Delete</button> 
+          </div> 
+          <img src="vintage-bike-logo-cartoon-with-ai-generative-free-png.webp" alt="Featured Image" class="img-fluid mb-3" style="max-width: 200px; max-height: 150px;" /> 
+          <p class="card-text">Existing Logo</p> 
+        </div> 
+      </div> 
+    </div>   </div> 
+ 
+category.html 
+<div class="container pt-5 mb-5">  
+ <div class="row">  
+ <div class="col">  
+ <div class="card">  
+ <div class="card-header bg-primary text-white">  
+ <div class="d-flex justify-content-between align-items-center"><h3 class="m-0">Bikes</h3>  
+ <button class="btn btn-sm btn-light" data-bs-toggle="modal"  data-bs-target="#addNewCatModal">Add New</button>  
+ </div>  
+ </div>  
+ <div class="card-body">  
+ <div class="input-group input-group-sm mb-3" >  
+ <p class="input-group-text bg-light">Filter:</p>  
+ <div class="btn-group pt-1 pb-1" role="group">   <input type="radio" class="btn-check" name="filter"  id="filter1" value="title" ng-model="searchType">  <label class="btn btn-outline-secondary"  for="filter1">Title</label>  
+ <input type="radio" class="btn-check" name="filter"  id="filter2" value="date" ng-model="searchType">   <label class="btn btn-outline-secondary"  for="filter2">Created</label>  
+ </div>  
+ <input type="search" class="form-control " id="filter-text"  placeholder="Search..." ng-model="searchText">  
+ </div>  
+ <div class="table-responsive">  
+ <table class="table table-bordered" >  
+ <thead class="bg-light">  
+ <tr align="center">  
+ <th>#</th>  
+ <th ng-click="customOrderBy('title')" ngclass="{activeHeader:orderByField==='title', reverse:reverseOrder}">  
+ Title  
+ </th>  
+ <th ng-click="customOrderBy('published')" ngclass="{activeHeader:orderByField==='published', reverse:reverseOrder}">  
+ Created  
+ </th>  
+ <th>Action</th>  
+ </tr>  
+ </thead>  
+ <tbody>  
+ <tr ng-show="!categories">  
+ <td colspan="4">No records found...</td>  
+ </tr>  
+ <tr ng-repeat="category in categories |  
+orderBy:orderByField:reverseOrder | searchFilter:searchType:searchText"  align="center">   <td>{{$index+1}}</td>  
+ <td>{{category.title}}</td>  
+ <td>{{category.date}}</td>  
+  
+ <td > <div class="btn-group" role="group">  
+ <button class="btn btn-sm btn-warning" data-bstoggle="modal" data-bs-target="#editCatModal" title="Edit" ngclick="selectCategory(category.id)">  
+ Edit  
+ </button>  
+ <button class="btn btn-sm btn-danger" data-bstoggle="modal" data-bs-target="#deleteCatModal" title="Delete" ngclick="selectCategory(category.id)">  
+ Delete  
+ </button>  
+ </div>  
+ </td>  
+</tr>  
+ </body>  
+ </table>  
+ </div>  
+ </div>  
+ </div>  
+ </div>  
+ </div>  </div> 
+ 
+category-edit.html 
+<div class="modal fade" id="editCatModal" data-bs-backdrop="static" data-bskeyboard="false" tabindex="-1">  
+ <div class="modal-dialog modal-dialog-centered">  
+ <div class="modal-content">  
+ <div class="modal-header">  
+ <h5 class="modal-title">Edit Bike Category</h5><button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  
+ </div>  
+ <form name="frmEditCategory" ng-submit="updateCategory()" novalidate>  
+ <div class="modal-body">  
+ <div class="mb-3">  
+ <label for="title" class="col-form-label">Title:</label>  
+ <input type="text" class="form-control" id="title" ngmodel="selectedCategory.title"   ng-class="{'is-invalid': frmEditCategory.title.$touched &&  frmEditCategory.title.$invalid }" />  
+ </div>  
+ </div>  
+ <div class="modal-footer">  
+ <button type="button" class="btn btn-secondary" data-bsdismiss="modal">  
+ Close  
+ </button>  
+ <button type="submit" class="btn btn-primary">  
+ Save changes  
+ </button>  
+</div>  
+ </form>  
+ </div>  
+ </div>  </div> category-add.html 
+<form action="#!/bikes" ng-submit="submitForm()"> 
+  <div class="add-new-phone"> 
+    <div class="add"> 
+        <p>Add New Bike</p> 
+    </div> 
+    <div class="phone-data"> 
+        <div class="add-phone-data"> 
+            <p>Add Your Bike Data</p> 
+        </div> 
+        <div class="data"> 
+            <div class="input-row"> 
+              <div class="input-group"> 
+                <label for="">Bike Name:</label> 
+                <input type="text" placeholder="Bike Name" ng-model="title"> 
+              </div> 
+              <div class="input-group"> 
+                <label for="">Bike Image:</label> 
+                <input type="file" name="" id="" class="file" ng-model="img" accept="image/*"> 
+              </div> 
+            </div> 
+            <div class="input-row"> 
+                <div class="input-group"> 
+                  <label for="">Category:</label> 
+                  <select name="" id="" ng-model="catagories"> 
+                    <option value="Sports Bike">Sports Bike</option> 
+                    <option value="Cruiser Bike">Cruiser Bike</option> 
+                    <option value="Adventure Bike">Adventure Bike</option> 
+                    <option value="Touring Bike">Touring Bike</option> 
+                    <option value="Dirt Bike">Dirt Bike</option> 
+                  </select> 
+                </div> 
+                <div class="input-group"> 
+                  <label for="">Price(₹):</label> 
+                    <input type="text" name="" id="" placeholder="Price" ng-model="price"> 
+                </div> 
+                <div class="input-group"> 
+                  <label for="">Launch Date:</label> 
+                  <input type="date" placeholder="Launch Date" ng-model="launchOn"> 
+                </div> 
+              </div> 
+              <div class="input-row"> 
+                <div class="input-group"> 
+                  <label for="">Milage:</label> 
+                  <input type="text" placeholder="Milage" ng-model="ram"> 
+                </div> 
+                <div class="input-group"> 
+                  <label for="">Top Speed:</label> 
+                    <input type="text" placeholder="Top Speed (km/hr)" ng-model="rom"> 
+                </div> 
+                <div class="input-group"> 
+                    <label for="">Engine (CC):</label> 
+                      <input type="text" placeholder="Engine (CC)" ng-model="processor"> 
+                  </div> 
+              </div> 
+              <div class="input-row"> 
+                <div class="input-group"> 
+                  <label for="">Short Content:</label> 
+                  <input type="text" placeholder="Short Content" ng-model="shortContent"> 
+                </div> 
+              </div> 
+              <div class="input-row"> 
+                <div class="input-group"> 
+                  <label for="">Description:</label> 
+                  <ng-quill-editor                   id="bike-content"                   name="bike-content"                   ng-model="content" 
+                ></ng-quill-editor> 
+                </div> 
+              </div> 
+              <button class="cancel">Cancel</button> 
+              <button type="submit" class="Save-Change">Save Change</button> 
+        </div> 
+    </div> 
+  </div> </form> 
+ 
+bike-edit.html 
+<div class="container pt-5 mb-5">   <h3 class="mb-3">Update Bike</h3> 
+ 
+  <div class="row mb-3"> 
+    <div class="col-md-8"> 
+      <form action="#!/bikes" ng-submit="submitForm()"> 
+        <input type="hidden" id="id" ng-model="bikes[bikeId-1].id" /> 
+        <div class="card"> 
+          <div class="card-header">Update Basic Details</div> 
+          <div class="card-body"> 
+            <div class="mb-3"> 
+              <label for="title" class="col-form-label">Title:</label> 
+              <input type="text" class="form-control" id="title" ng-model="bikes[bikeId-1].title" /> 
+            </div> 
+            <div class="row mb-3"> 
+              <div class="col-md-8"> 
+                <label for="category" class="form-label">Category</label> 
+                <select class="form-select" id="category" ng-model="bikes[bikeId-1].catagories"> 
+                  <option value="Motorcycle"> Motorcycle</option> 
+                  <option value="Street">Street</option> 
+                  <option value="Cruiser">Cruiser</option> 
+                  <option value="Sports">Sports</option> 
+                </select> 
+              </div> 
+               
+              <div class="col-md-4"> 
+                <label for="pdate" class="form-label">Price</label> 
+                <input class="form-control" type="text" id="pdate" ng-model="bikes[bikeId-1].price" /> 
+              </div> 
+              <div class="col-md-4"> 
+                <label for="pdate" class="form-label">Launch Date</label> 
+                <input class="form-control" type="date" id="pdate" ng-model="bikes[bikeId-1].launchOn" /> 
+              </div> 
+            </div> 
+            <div class="mb-3"> 
+              <label for="scontent" class="col-form-label">Short Content:</label> 
+              <textarea name="scontent" id="scontent" class="form-control" rows="5"> 
+{{bikes[bikeId-1].shortContent}} 
+              </textarea> 
+            </div> 
+            <button type="submit" class="btn btn-sm btn-secondary"> 
+              Save changes 
+            </button> 
+          </div> 
+        </div> 
+      </form> 
+    </div> 
+    <div class="col-md-4"> 
+      <div class="card"> 
+        <div class="card-header">Update Feature Image</div> 
+        <img src="{{bikes[bikeId-1].img}}" class="card-img-bottom" alt="..." />         <div class="card-body"> 
+          <form action="#!/bikes" ng-submit="submitForm()"> 
+            <div class="mb-3"> 
+              <label for="fimage" class="form-label">Feature Image</label> 
+              <input class="form-control" type="file" id="fimage" /> 
+            </div> 
+            <button type="submit" class="btn btn-sm btn-secondary"> 
+              Save changes 
+            </button> 
+          </form> 
+        </div> 
+      </div> 
+    </div>   </div> 
+ 
+  <div class="card"> 
+    <form action="#!/bikes" ng-submit="submitForm()"> 
+      <div class="card-header">Update Full Content</div> 
+      <div class="card-body"> 
+        <div class="mb-3"> 
+          <label for="fcontent" class="col-form-label">Full Content:</label> 
+          <ng-quill-editor id="fcontent" name="fcontent" ng-model="bikes[bikeId-1].content"></ngquill-editor> 
+        </div> 
+        <button type="submit" class="btn btn-sm btn-secondary"> 
+          Save changes 
+        </button> 
+      </div> 
+    </form> 
+  </div> </div> 
+ 
+404.html 
+<h1>404 Page Not Found</h1> 
